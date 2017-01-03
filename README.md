@@ -4,7 +4,7 @@
 
 <p>Need to install <b>Text::CSV</b> module</p>
 
-<p><b>cpanm</b> is the simplest way install perl modules. You can install <b>cpanm</b> with.</p>
+<p><b>cpanm</b> is the simplest way install perl modules. You can install <b>cpanm</b> with</p>
 
 <dl>
   <dt>For Linux Users,</dt>
