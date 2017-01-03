@@ -74,7 +74,6 @@ if( defined( $old_file ) )
         {
             $weight_dir = $weight - $row->[1];
             $previous_weight = $row->[1];
-            print "$weight_dir\n";
         }
 
         push @rows, $row;
