@@ -9,11 +9,22 @@ use Pod::Usage;
 
 my $user;
 my $weight;
+my $opt_help; 
+my $opt_man;
 
 GetOptions(
-            "user=s"     => \$user,     # string
-            "weight=i"   => \$weight    # numeric
-          ) or pod2usage(2);
+    "user=s"     => \$user,     # string
+    "weight=i"   => \$weight,   # numeric
+    'help'       => \$opt_help,
+    'man'        => \$opt_man,
+) or pod2usage( "Try '$0 --help' for more information." );
+
+pod2usage( -verbose => 1 ) if $opt_help;
+pod2usage( -verbose => 2 ) if $opt_man;
+
+unless( defined $user and defined $weight ) {
+    pod2usage( "Try perl $0 -u <user name> -w <weight>" );
+}
 
 my $dir = 'weight_history_reports';
 
@@ -25,7 +36,7 @@ if( !( -e $dir and -d $dir ) )
 }
 
 my $weight_dir = 0;
-my $timestamp  = strftime("%Y-%m-%d_%H-%M-%S", gmtime() );
+my $timestamp  = strftime("%Y-%m-%d_%H-%M-%S", localtime );
 my $basename   = 'weight_history_report';
 my $file_name  = "${user}_${basename}_${timestamp}";
 my $file       = "$dir/$file_name.csv";
@@ -86,7 +97,6 @@ else
     push @rows, $row;
 }
 
-
 # Insert new row
 my $row;
 $row->[0] = $timestamp;
@@ -99,3 +109,31 @@ $csv->eol( "\r\n" );
 open $fh, ">:encoding(utf8)", "$file" or die "$file: $!";
 $csv->print( $fh, $_ ) for @rows;
 close $fh or die "$file: $!";
+
+=head1 EXAMPLES
+
+  The following is an example of this script:
+
+ weight_history_report.pl -u user_1 -w 170
+
+=cut
+
+=head1 OPTIONS
+
+=over 8
+
+=item B<-u> or B<-user>
+User name
+
+=item B<-w> or B<-weight>
+Weight
+
+=item B<--help>
+Show the brief help information.
+
+=item B<--man>
+Read the manual, with examples.
+
+=back
+
+=cut
